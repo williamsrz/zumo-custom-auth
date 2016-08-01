@@ -51,11 +51,11 @@ namespace ZumoAuth.Core.ViewModels
 
             var jObject = JObject.FromObject(new
             {
-                userName = Username,
-                password = Password
+                email = "sandbox@email.com",
+                password = "sandbox"
             });
 
-            var result = await Client.LoginAsync("CustomAuth", jObject);
+            var result = await Client.LoginAsync("Sandbox", jObject);
 
             if (result == null)
                 return;
