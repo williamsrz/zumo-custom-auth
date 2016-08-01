@@ -18,11 +18,13 @@ namespace ZumoAuth
         {
             HttpConfiguration config = new HttpConfiguration();
 
+            config.Routes.MapHttpRoute("SandboxAuthProvider", ".auth/login/sandbox", new { controller = "SandboxAuth" });
+
             //For more information on Web API tracing, see http://go.microsoft.com/fwlink/?LinkId=620686 
             config.EnableSystemDiagnosticsTracing();
 
-            https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-dotnet-backend-how-to-use-server-sdk/#custom-auth
-            config.Routes.MapHttpRoute("CustomAuth", ".auth/login/CustomAuth", new { controller = "CustomAuth" });
+            //https://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-dotnet-backend-how-to-use-server-sdk/#custom-auth
+            //config.Routes.MapHttpRoute("CustomAuth", ".auth/login/CustomAuth", new { controller = "CustomAuth" });
 
             new MobileAppConfiguration()
                 .UseDefaultConfiguration()
@@ -55,7 +57,7 @@ namespace ZumoAuth
     {
         protected override void Seed(MobileServiceContext context)
         {
-            
+
         }
     }
 }
