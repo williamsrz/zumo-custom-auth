@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ZumoAuth.Identity
 {
-    public class SandboxCredentials
+    public sealed class SandboxAuthCredentials
     {
         [JsonProperty("email")]
         public string Email { get; set; }

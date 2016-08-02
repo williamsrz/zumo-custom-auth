@@ -19,34 +19,39 @@ namespace ZumoAuth.Controllers
     {
         private const string AuthSigningKeyVariableName = "WEBSITE_AUTH_SIGNING_KEY";
         private const string HostNameVariableName = "WEBSITE_HOSTNAME";
-
-        public string WebsiteHostName => Environment.GetEnvironmentVariable(HostNameVariableName) ?? "localhost";
         private string TokenSigningKey => Environment.GetEnvironmentVariable(AuthSigningKeyVariableName) ?? ConfigurationManager.AppSettings["SigningKey"];
-
-        public async Task<IHttpActionResult> Post([FromBody] JObject assertion)
+        public string WebsiteHostName => Environment.GetEnvironmentVariable(HostNameVariableName) ?? "localhost";
+       
+        public async Task<IHttpActionResult> Post([FromBody] JObject authCredentials)
         {
-            SandBoxAuthResponse authResult = AuthenticateCredentials(assertion.ToObject<SandboxCredentials>());
+            SandBoxAuthResponse authResult = AuthenticateCredentials(authCredentials.ToObject<SandboxAuthCredentials>());
 
             if (!authResult.Success)
             {
                 return Unauthorized();
             }
 
-            IEnumerable<Claim> claims = GetAccountClaims(authResult.User);
-            string websiteUri = $"https://{WebsiteHostName}/";
-
-            JwtSecurityToken token = AppServiceLoginHandler
-                .CreateToken(claims, TokenSigningKey, websiteUri, websiteUri, TimeSpan.FromDays(30));
-
+            var token = GetJwtSecurityToken(authResult.User);
+           
             return Ok(new LoginResult { RawToken = token.RawData, User = authResult.User });
         }
 
-        private SandBoxAuthResponse AuthenticateCredentials(SandboxCredentials credentials)
+        private JwtSecurityToken GetJwtSecurityToken(User user) 
+        {
+            IEnumerable<Claim> claims = GetAccountClaims(user);
+            string websiteUri = $"https://{WebsiteHostName}/";
+
+            return AppServiceLoginHandler
+                .CreateToken(claims, TokenSigningKey, websiteUri, websiteUri, TimeSpan.FromDays(30));
+        }
+        
+        private SandBoxAuthResponse AuthenticateCredentials(SandboxAuthCredentials credentials)
         {
             //validate user against db, or service here
 
             var user = new User { UserId = Guid.NewGuid().ToString(), Email = "sandbox@email.com", FirstName = "Sandbox", LastName = "User" };
-            var sucess = (credentials.Email == user.Email); //dummy validation
+
+            var sucess = (credentials.Email == user.Email && credentials.Password == user.Password); //dummy validation
 
             var authResponse = new SandBoxAuthResponse { User = user, Success = sucess };
 
@@ -55,9 +60,10 @@ namespace ZumoAuth.Controllers
 
         private IEnumerable<Claim> GetAccountClaims(User user) => new Claim[]
          {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserId),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
-                new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName)
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Email)
          };
     }
 }

@@ -14,6 +14,9 @@ namespace ZumoAuth.Identity
         [JsonProperty("email")]
         public string Email { get; set; }
 
+        [JsonIgnore]
+        public string Password { get; set; }
+
         [JsonProperty("firstName")]
         public string FirstName { get; set; }
 

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ZumoAuth.Identity
 {
-    public class SandBoxAuthResponse
+    public sealed class SandBoxAuthResponse
     {
         public bool Success { get; set; }
 

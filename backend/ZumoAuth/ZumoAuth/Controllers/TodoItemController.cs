@@ -9,6 +9,7 @@ using ZumoAuth.Models;
 
 namespace ZumoAuth.Controllers
 {
+    [Authorize]
     public class TodoItemController : TableController<TodoItem>
     {
         protected override void Initialize(HttpControllerContext controllerContext)

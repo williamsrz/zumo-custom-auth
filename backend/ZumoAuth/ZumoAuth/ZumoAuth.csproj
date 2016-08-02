@@ -201,7 +201,7 @@
     <Compile Include="DataObjects\TodoItem.cs" />
     <Compile Include="Identity\LoginResult.cs" />
     <Compile Include="Identity\SandBoxAuthResponse.cs" />
-    <Compile Include="Identity\SandboxCredentials.cs" />
+    <Compile Include="Identity\SandboxAuthCredentials.cs" />
     <Compile Include="Identity\User.cs" />
     <Compile Include="Models\MobileServiceContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
