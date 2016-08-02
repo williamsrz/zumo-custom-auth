@@ -27,6 +27,15 @@ namespace ZumoAuth.iOS
         {
             return new DebugTrace();
         }
+
+        protected override void InitializeLastChance()
+        {
+            base.InitializeLastChance();
+
+
+            UserInteractionService.Initialize();
+
+        }
     }
 }
 

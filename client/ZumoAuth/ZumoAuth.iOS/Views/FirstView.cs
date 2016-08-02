@@ -17,8 +17,9 @@ namespace ZumoAuth.iOS.Views
             base.ViewDidLoad();
 
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
-            set.Bind(Label).To(vm => vm.Hello);
-            set.Bind(TextField).To(vm => vm.Hello);
+            set.Bind(EmailTextField).To(vm => vm.Username);
+            set.Bind(PasswordTextField).To(vm => vm.Password);
+            set.Bind(AuthenticateButton).For("Tap").To(vm => vm.AuthenticateCommand);
             set.Apply();
         }
     }
