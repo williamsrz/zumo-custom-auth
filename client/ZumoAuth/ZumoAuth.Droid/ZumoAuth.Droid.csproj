@@ -171,7 +171,7 @@
     <Compile Include="Views\BaseView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
-    <Compile Include="Services\ZumoClientService.cs" />
+    <Compile Include="Services\AzureMobileAppClientService.cs" />
     <Compile Include="Services\UserInteractionService.cs" />
   </ItemGroup>
   <ItemGroup>

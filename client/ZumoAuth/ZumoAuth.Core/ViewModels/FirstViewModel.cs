@@ -11,31 +11,17 @@ namespace ZumoAuth.Core.ViewModels
     public class FirstViewModel
         : MvxViewModel
     {
-
         private IUserInteractionService _userInteractionService;
         protected IUserInteractionService UserInteractionService
             => _userInteractionService ?? (_userInteractionService = Mvx.Resolve<IUserInteractionService>());
 
-        private const string _applicationURL = @"https://zumo-auth.azurewebsites.net";
-        private static MobileServiceClient _mobileServiceClient;
-        private static MobileServiceUser _user;
+        private readonly IAuthService _authService;
 
-        public static MobileServiceClient Client
-        {
-            get
-            {
-                return _mobileServiceClient ?? (_mobileServiceClient = new MobileServiceClient(_applicationURL));
-            }
-        }
 
-        public static MobileServiceUser CurrentUser
+        public FirstViewModel(IAuthService authService)
         {
-            get { return _user; }
-            set { _user = value; }
-        }
+            _authService = authService;
 
-        public FirstViewModel()
-        {
             AuthenticateCommand = new MvxAsyncCommand(AuthenticateCommandExecuteAsync);
         }
 
@@ -49,18 +35,12 @@ namespace ZumoAuth.Core.ViewModels
         private async Task AuthenticateCommandExecuteAsync()
         {
 
-            var jObject = JObject.FromObject(new
-            {
-                email = "sandbox@email.com",
-                password = "sandbox"
-            });
+            AccountResponse accountResponse = await _authService.LoginAsync(Username, Password);
 
-            var result = await Client.LoginAsync("Sandbox", jObject);
-
-            if (result == null)
+            if (accountResponse == null)
                 return;
 
-            if (string.IsNullOrWhiteSpace(result.MobileServiceAuthenticationToken))
+            if (!accountResponse.Success)
             {
                 UserInteractionService.ShowToast("Casa caiu!");
             }

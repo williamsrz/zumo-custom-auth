@@ -5,10 +5,10 @@ using ZumoAuth.Core;
 
 namespace ZumoAuth.Droid
 {
-    public class ZumoClientService : IZumoClientService
+    public class AzureMobileAppClientService : IAzureMobileAppClientService
     {
         internal static void Initialize()
-           => Mvx.RegisterSingleton<IZumoClientService>(new ZumoClientService());
+           => Mvx.RegisterSingleton<IAzureMobileAppClientService>(new AzureMobileAppClientService());
 
         public void Setup()
         {

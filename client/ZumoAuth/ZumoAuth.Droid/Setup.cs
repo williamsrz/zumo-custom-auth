@@ -24,9 +24,8 @@ namespace ZumoAuth.Droid
         protected override void InitializeLastChance()
         {
             UserInteractionService.Initialize();
-            ZumoClientService.Initialize();
+            AzureMobileAppClientService.Initialize();
             base.InitializeLastChance();
         }
     }
 }
-
